@@ -7,7 +7,7 @@ namespace Biblioteca
 {
     public class ItemCarrito
     {
-        public int Subtotal { get; set; }
+        public double Subtotal { get; set; }
         public int Cantidad { get; set; }
         public Producto Producto { get; set; }
 
