@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lab15-PC01\\Desktop\\Tienda Online - Cliente\\Biblioteca\\Biblioteca.csproj",
+      "projectUniqueName": "C:\\Users\\Lab15-PC01\\Documents\\GitHub\\Tienda-Online-Cliente\\Biblioteca\\Biblioteca.csproj",
       "projectName": "Biblioteca",
-      "projectPath": "C:\\Users\\Lab15-PC01\\Desktop\\Tienda Online - Cliente\\Biblioteca\\Biblioteca.csproj",
+      "projectPath": "C:\\Users\\Lab15-PC01\\Documents\\GitHub\\Tienda-Online-Cliente\\Biblioteca\\Biblioteca.csproj",
       "packagesPath": "C:\\Users\\Lab15-PC01\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lab15-PC01\\Desktop\\Tienda Online - Cliente\\Biblioteca\\obj\\",
+      "outputPath": "C:\\Users\\Lab15-PC01\\Documents\\GitHub\\Tienda-Online-Cliente\\Biblioteca\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Lab15-PC01\\AppData\\Roaming\\NuGet\\NuGet.Config",
