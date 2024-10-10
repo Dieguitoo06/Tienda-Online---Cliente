@@ -7,11 +7,11 @@ namespace Biblioteca
 {
     public class ItemCarrito
     {
-        public double Subtotal { get; set; }
+        public decimal Subtotal { get; set; }
         public int Cantidad { get; set; }
         public Producto Producto { get; set; }
 
-    public ItemCarrito (int subtotal, int cantidad, Producto producto )
+    public ItemCarrito (decimal subtotal, int cantidad, Producto producto )
     {
         Subtotal = subtotal;
         Cantidad = cantidad;

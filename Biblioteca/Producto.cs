@@ -9,16 +9,14 @@ namespace Biblioteca
     {
         public string Nombre { get; set;}
         public string Descripcion { get; set;}
-        public double PrecioUnitario { get; set;}
-        public string Categoria { get; set;}
+        public decimal PrecioUnitario { get; set;}
         public int Stock { get; set; }
 
-        public Producto (string nombre, string descripcion, int preciounitario, string categoria, int stock)
+        public Producto (string nombre, string descripcion, decimal preciounitario,  int stock)
         {
             Nombre = nombre;
             Descripcion = descripcion;
             PrecioUnitario = preciounitario;
-            Categoria = categoria;
             Stock = stock;
         }
     }
