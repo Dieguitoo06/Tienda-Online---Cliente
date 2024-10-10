@@ -9,7 +9,7 @@ namespace Biblioteca
     {
         public string Nombre { get; set;}
         public string Descripcion { get; set;}
-        public int PrecioUnitario { get; set;}
+        public double PrecioUnitario { get; set;}
         public string Categoria { get; set;}
         public int Stock { get; set; }
 
