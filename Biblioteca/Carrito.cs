@@ -1,15 +1,22 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Biblioteca
-{
-    public class Carrito
+namespace Biblioteca;
+
+[Table("Carrito")]
+public class Carrito
+{   
+    [Key]
+    [Required]
+    public int NroCarrito { get; set; }
+
+    [Required]
+    public decimal Total { get; set; } = 0;
+
+    public List<ItemCarrito> Productos { get; set; } = new List<ItemCarrito>();
+
+    public Carrito()
     {
-        public  int NroCarrito { get; set; }
-        public decimal Total { get; set; }
-        public List<ItemCarrito> Productos { get; set; } = new List<ItemCarrito>();
-
-        public Carrito()
-        {
-            Productos = new List<ItemCarrito>();
-        }
+        Productos = new List<ItemCarrito>();
     }
 }

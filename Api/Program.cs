@@ -1,26 +1,39 @@
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+var connectionString = builder.Configuration.GetConnectionString("aplicacion_db");
+
+
+builder.Services.AddDbContext<AplicacionDbContext>(opciones =>
+    opciones.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30))));
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
 
-    //se agrega la opcion de EnableTryItOutDefault
-    //ya no se debe hacer click en el boton azul "Try It Out"
+   
     app.UseSwaggerUI(options => options.EnableTryItOutByDefault());
 }
 
 app.UseHttpsRedirection();
 
+
 app.MapGet("/", () => Results.Redirect("/swagger"));
+
+using (var scope = app.Services.CreateScope())
+{
+    var contexto = scope.ServiceProvider.GetRequiredService<AplicacionDbContext>();
+    contexto.Database.EnsureCreated();
+}
 
 app.Run();

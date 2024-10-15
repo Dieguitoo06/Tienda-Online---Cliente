@@ -1,21 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Biblioteca
-{
-    public class ItemCarrito
-    {
-        public decimal Subtotal { get; set; }
-        public int Cantidad { get; set; }
-        public Producto Producto { get; set; }
+namespace Biblioteca;
 
-    public ItemCarrito (decimal subtotal, int cantidad, Producto producto )
-    {
-        Subtotal = subtotal;
-        Cantidad = cantidad;
-        Producto = producto;
-    }
-    }
+[Table("ItemCarrito")]    
+public class ItemCarrito
+{
+    [Required]
+    public decimal Subtotal { get; set; }
+
+    [Required]
+    public int Cantidad { get; set; }
+
+    [Required]
+    [ForeignKey("Carrito")]
+    public Producto Producto { get; set; }
+
 }
