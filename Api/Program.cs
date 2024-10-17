@@ -1,5 +1,7 @@
-using Microsoft.AspNetCore.Http.HttpResults;
+using Api.Funcionalidaades.Clientes;
+using Biblioteca;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,5 +37,19 @@ using (var scope = app.Services.CreateScope())
     var contexto = scope.ServiceProvider.GetRequiredService<AplicacionDbContext>();
     contexto.Database.EnsureCreated();
 }
+
+app.MapGet("/Cliente", (AplicacionDbContext context) =>
+{
+    var Cliente = context.Clientes.ToList();
+    return Results.Ok(Cliente);
+});
+
+app.MapPost("/Cliente", (AplicacionDbContext context, UsuariosCommandDto usuario) =>
+{
+    Cliente nuevoCliente = new Cliente() {Usuario = Cliente.Usuario};
+    context.Clientes.Add(nuevoCliente);
+    context.SaveChanges();
+    return Results.Ok();
+});
 
 app.Run();

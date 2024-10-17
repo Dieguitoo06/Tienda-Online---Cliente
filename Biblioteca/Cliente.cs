@@ -21,7 +21,7 @@ public class Cliente
 
     [Required]
     [StringLength(50)]
-    public required string Usuario { get; set; } 
+    public string Usuario { get; set; } 
 
     [Required]
     [StringLength(50)]
