@@ -46,7 +46,7 @@ app.MapGet("/Cliente", (AplicacionDbContext context) =>
 
 app.MapPost("/Cliente", (AplicacionDbContext context, UsuariosCommandDto usuario) =>
 {
-    Cliente nuevoCliente = new Cliente() {Usuario = Cliente.Usuario};
+    Cliente nuevoCliente = new Cliente() {Usuario = usuario.Usuario};
     context.Clientes.Add(nuevoCliente);
     context.SaveChanges();
     return Results.Ok();

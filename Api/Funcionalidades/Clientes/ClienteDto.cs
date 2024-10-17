@@ -9,6 +9,13 @@ public class UsuariosQueryDto
 
 public class UsuariosCommandDto
 {
-    public required string Usuario { get; set; }
+    public required int Dni { get; set; }
 
+    public required string Nombre { get; set;}
+
+    public required string Apellido { get; set; }    
+
+    public required string Usuario { get; set; } 
+
+    public required string Contraseña { get; set; }
 }
