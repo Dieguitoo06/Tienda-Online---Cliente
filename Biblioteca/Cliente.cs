@@ -11,20 +11,20 @@ public class Cliente
     public int Dni { get; set; }
 
     [Required]
-    public string Nombre { get; set;}
+    public required string Nombre { get; set;}
 
     [Required]
-    public string Apellido { get; set; }
+    public required string Apellido { get; set; }
 
     [StringLength(50)]
-    public string Email { get; set; }    
-
-    [Required]
-    [StringLength(50)]
-    public string Usuario { get; set; } 
+    public required string Email { get; set; }    
 
     [Required]
     [StringLength(50)]
-    public string Contraseña { get; set; }
+    public required string Usuario { get; set; } 
+
+    [Required]
+    [StringLength(50)]
+    public required string Contraseña { get; set; }
 
 }
