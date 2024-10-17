@@ -18,4 +18,6 @@ public class UsuariosCommandDto
     public required string Usuario { get; set; } 
 
     public required string Contraseña { get; set; }
+
+    public required string Email { get; set;}
 }
