@@ -1,5 +1,6 @@
 namespace Api.Funcionalidaades.Clientes;
 
+// Lecturas
 public class UsuariosQueryDto
 {
     public int Dni { get; set; }
@@ -7,6 +8,7 @@ public class UsuariosQueryDto
 
 }
 
+// Escrituras
 public class UsuariosCommandDto
 {
     public required int Dni { get; set; }

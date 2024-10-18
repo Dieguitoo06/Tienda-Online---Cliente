@@ -38,18 +38,8 @@ using (var scope = app.Services.CreateScope())
     contexto.Database.EnsureCreated();
 }
 
-app.MapGet("/Cliente", (AplicacionDbContext context) =>
-{
-    var Cliente = context.Clientes.ToList();
-    return Results.Ok(Cliente);
-});
-
-app.MapPost("/Cliente", (AplicacionDbContext context, UsuariosCommandDto usuario) =>
-{
-    Cliente nuevoCliente = new Cliente() {Usuario = usuario.Usuario, Apellido = usuario.Apellido, Contraseña = usuario.Contraseña, Dni = usuario.Dni, Nombre = usuario.Nombre, Email = usuario.Email};
-    context.Clientes.Add(nuevoCliente);
-    context.SaveChanges();
-    return Results.Ok();
-});
+app.MapGroup("/Api")
+   .MapClienteEndPoints()
+   .WithTags("Cliente");
 
 app.Run();
