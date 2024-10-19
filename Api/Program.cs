@@ -29,7 +29,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
+//Endpoint para que nos redireccione a Swagger directamente.
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
 
@@ -39,8 +39,11 @@ using (var scope = app.Services.CreateScope())
     contexto.Database.EnsureCreated();
 }
 
+//Metodo para agrupar nuestros endpoints.
 app.MapGroup("/Api")
    .MapClienteEndPoints()
    .WithTags("Cliente");
+
+app.MapGroup("/Api");
 
 app.Run();
