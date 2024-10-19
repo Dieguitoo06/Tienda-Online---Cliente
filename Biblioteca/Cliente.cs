@@ -24,7 +24,7 @@ public class Cliente
     public string Usuario { get; set; } 
 
     [Required]
-    [StringLength(50)]
+    [MaxLength(256)]
     public string Contraseña { get; set; }
 
 }

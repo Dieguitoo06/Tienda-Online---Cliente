@@ -32,6 +32,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
+
 using (var scope = app.Services.CreateScope())
 {
     var contexto = scope.ServiceProvider.GetRequiredService<AplicacionDbContext>();

@@ -1,4 +1,5 @@
 using Biblioteca;
+using Microsoft.AspNetCore.Identity;
 
 namespace Api.Funcionalidaades.Clientes;
 
@@ -12,13 +13,18 @@ public static class ClienteEndpoints
             return Results.Ok(Cliente);
         });
 
-        app.MapPost("/Cliente/Registrar", (AplicacionDbContext context, UsuariosCommandDto usuario) =>
+        var passwordHasher = new PasswordHasher<Cliente>();
+
+        app.MapPost("/cliente/Registrar", async (AplicacionDbContext context, Cliente nuevoCliente) =>
         {
-            Cliente nuevoCliente = new Cliente() {Usuario = usuario.Usuario, Apellido = usuario.Apellido, Contraseña = usuario.Contraseña, Dni = usuario.Dni, Nombre = usuario.Nombre, Email = usuario.Email};
+            nuevoCliente.Contraseña = passwordHasher.HashPassword(nuevoCliente, nuevoCliente.Contraseña);
+
             context.Clientes.Add(nuevoCliente);
-            context.SaveChanges();
-            return Results.Ok();
+            await context.SaveChangesAsync();
+
+            return Results.Ok("Cliente creado exitosamente");
         });
+
 
         app.MapGet("/cliente/Buscar", async (AplicacionDbContext context, int dni) =>
         {
@@ -32,10 +38,9 @@ public static class ClienteEndpoints
             return Results.Ok(cliente);
         });
 
-        app.MapPut("/cliente/Actualizar", async (AplicacionDbContext context, int dni, Cliente clienteActualizado) =>
+       app.MapPut("/clientes/Actualizar", async (AplicacionDbContext context, int id, Cliente clienteActualizado) =>
         {
-            var clienteExistente = await context.Clientes.FindAsync(dni);
-
+            var clienteExistente = await context.Clientes.FindAsync(id);
             if (clienteExistente == null)
             {
                 return Results.NotFound("Cliente no encontrado");
@@ -45,12 +50,16 @@ public static class ClienteEndpoints
             clienteExistente.Apellido = clienteActualizado.Apellido;
             clienteExistente.Email = clienteActualizado.Email;
             clienteExistente.Usuario = clienteActualizado.Usuario;
-            clienteExistente.Contraseña = clienteActualizado.Contraseña;
 
-            context.SaveChanges();
+            if (!string.IsNullOrEmpty(clienteActualizado.Contraseña))
+            {
+                clienteExistente.Contraseña = passwordHasher.HashPassword(clienteExistente, clienteActualizado.Contraseña);
+            }
 
+            await context.SaveChangesAsync();
             return Results.Ok("Cliente actualizado exitosamente");
         });
+
 
         return app;
     }
