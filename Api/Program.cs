@@ -1,5 +1,4 @@
 using Api.Funcionalidaades.Clientes;
-using Biblioteca;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -44,6 +43,8 @@ app.MapGroup("/Api")
    .MapClienteEndPoints()
    .WithTags("Cliente");
 
-app.MapGroup("/Api");
+app.MapGroup("/Api")
+   .MapProductoEndPoints()
+   .WithTags("Producto");
 
 app.Run();

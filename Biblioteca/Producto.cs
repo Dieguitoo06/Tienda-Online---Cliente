@@ -21,9 +21,9 @@ public class Producto
     [Required]
     public decimal PrecioUnitario { get; set;}
 
-
-    public required Categoria Categoria { get; set; }
-
     [Required]
     public int Stock { get; set; }
+    
+    public required Categoria Categoria { get; set; }
+
 }
