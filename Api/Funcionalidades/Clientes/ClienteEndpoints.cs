@@ -38,7 +38,7 @@ public static class ClienteEndpoints
             return Results.Ok(cliente);
         });
 
-       app.MapPut("/clientes/Actualizar", async (AplicacionDbContext context, int id, Cliente clienteActualizado) =>
+        app.MapPut("/clientes/Actualizar", async (AplicacionDbContext context, int id, Cliente clienteActualizado) =>
         {
             var clienteExistente = await context.Clientes.FindAsync(id);
             if (clienteExistente == null)

@@ -18,7 +18,7 @@ public class ItemCarrito
 
     [Required]
     [ForeignKey("Carrito")]
-    public  Producto Producto { get; set; }
+    public  required Producto Producto { get; set; }
 
     [Key]
     [Required]

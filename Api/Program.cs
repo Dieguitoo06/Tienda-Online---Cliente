@@ -1,4 +1,5 @@
 using Api.Funcionalidaades.Clientes;
+using Api.Funcionalidades.ItemCarritos;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -22,7 +23,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
 
-   
+
     app.UseSwaggerUI(options => options.EnableTryItOutByDefault());
 }
 
@@ -40,11 +41,14 @@ using (var scope = app.Services.CreateScope())
 
 //Metodo para agrupar nuestros endpoints.
 app.MapGroup("/Api")
-   .MapClienteEndPoints()
-   .WithTags("Cliente");
+    .MapClienteEndPoints()
+    .WithTags("Cliente");
 
 app.MapGroup("/Api")
-   .MapProductoEndPoints()
-   .WithTags("Producto");
+    .MapProductoEndPoints()
+    .WithTags("Producto");
 
+app.MapGroup("/Api")
+    .MapItemcarritoEndPoints()
+    .WithTags("ItemCarrito");
 app.Run();
