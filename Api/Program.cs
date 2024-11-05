@@ -1,4 +1,5 @@
 using Api.Funcionalidaades.Clientes;
+using Api.Funcionalidades.Clientes.Categoria;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -47,4 +48,12 @@ app.MapGroup("/Api")
    .MapProductoEndPoints()
    .WithTags("Producto");
 
+app.MapGroup("/Api")
+   .MapCategoriaEndPoints()
+   .WithTags("Categoria");
+
+
 app.Run();
+
+
+
