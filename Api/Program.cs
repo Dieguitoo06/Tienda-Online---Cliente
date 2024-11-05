@@ -1,5 +1,6 @@
 using Api.Funcionalidaades.Clientes;
 using Api.Funcionalidades.ItemCarritos;
+
 using Microsoft.EntityFrameworkCore;
 
 
@@ -51,4 +52,11 @@ app.MapGroup("/Api")
 app.MapGroup("/Api")
     .MapItemcarritoEndPoints()
     .WithTags("ItemCarrito");
+
+
+
 app.Run();
+
+
+
+
