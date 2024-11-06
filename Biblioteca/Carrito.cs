@@ -13,10 +13,6 @@ public class Carrito
     [Required]
     public decimal Total { get; set; } = 0;
 
-    public List<ItemCarrito> Productos { get; set; } = new List<ItemCarrito>();
+    public List<ItemCarrito> Productos { get; set; } = new();
 
-    public Carrito()
-    {
-        Productos = new List<ItemCarrito>();
-    }
 }

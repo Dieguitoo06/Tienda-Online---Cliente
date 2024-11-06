@@ -1,4 +1,5 @@
 using Api.Funcionalidaades.Clientes;
+using Api.Funcionalidades.Carritos;
 using Api.Funcionalidades.Clientes.Categoria;
 using Api.Funcionalidades.ItemCarritos;
 
@@ -57,6 +58,10 @@ app.MapGroup("/Api")
 app.MapGroup("/Api")
     .MapCategoriaEndPoints()
     .WithTags("Categoria");
+
+app.MapGroup("/Api")
+    .MapCarritoEndpoints()
+    .WithTags("Carrito");
 
 
 app.Run();
