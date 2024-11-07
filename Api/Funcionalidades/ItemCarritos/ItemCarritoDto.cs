@@ -18,5 +18,6 @@ public class ItemCarritoCommandDto
     public int idItemCarrito { get; set; }
     public decimal Subtotal { get; set; }
     public int Cantidad { get; set; }
+    public int idProducto {get; set; }
 }
 
