@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using FluentValidation;
 
 namespace Api.Funcionalidades.Clientes.Categoria;
 
@@ -25,8 +26,14 @@ public static class CategoriaEndpoints
             return Results.Ok(categoria);
         });
 
-        app.MapPost("/categorias", async (ICategoriaService categoriaService, CategoriaCommandDto categoriaDto) =>
+        app.MapPost("/categorias", async (ICategoriaService categoriaService, IValidator<CategoriaCommandDto> validator, CategoriaCommandDto categoriaDto) =>
         {
+            var validationResult = await validator.ValidateAsync(categoriaDto);
+            if (!validationResult.IsValid)
+            {
+                return Results.BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
+            }
+
             var resultado = await categoriaService.CreateCategoria(categoriaDto);
             return Results.Ok(resultado);
         });
