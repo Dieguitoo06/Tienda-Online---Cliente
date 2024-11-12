@@ -1,68 +1,57 @@
-using Biblioteca;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
-namespace Api.Funcionalidaades.Clientes;
+using Api.Funcionalidaades.Productos;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 public static class ProductoEndpoints
 {
     public static RouteGroupBuilder MapProductoEndPoints(this RouteGroupBuilder app)
     {
-        app.MapGet("/Producto/Mostrar", (AplicacionDbContext context) =>
+        app.MapGet("/productos", async (IProductoService productoService) =>
         {
-            var Producto = context.Productos.ToList();
-            return Results.Ok(Producto);
-        });
-
-        app.MapPost("/productos", async (Producto producto, AplicacionDbContext context) =>
-        {
-            context.Productos.Add(producto);
-            await context.SaveChangesAsync();
-            return Results.Created($"/productos/{producto.idProducto}", producto);
-        });
-
-        app.MapGet("/productos", async (AplicacionDbContext context, string search = null, decimal? minPrice = null, decimal? maxPrice = null) =>
-        {
-            var query = context.Productos.Include(p => p.Categoria).AsQueryable(); // Asegúrate de incluir la entidad Categoria
-
-            if (!string.IsNullOrEmpty(search))
-            {
-                query = query.Where(p => 
-                    p.Nombre.Contains(search) || 
-                    p.Descripcion.Contains(search) || 
-                    p.Categoria.Nombre.Contains(search)); // Accede al Nombre de la Categoria
-            }
-
-            if (minPrice.HasValue)
-            {
-                query = query.Where(p => p.PrecioUnitario >= minPrice.Value); // Asegúrate de usar PrecioUnitario
-            }
-
-            if (maxPrice.HasValue)
-            {
-                query = query.Where(p => p.PrecioUnitario <= maxPrice.Value); // Asegúrate de usar PrecioUnitario
-            }
-
-            var productos = await query.ToListAsync();
+            var productos = productoService.GetProductos();
             return Results.Ok(productos);
         });
 
-        app.MapDelete("/productos/{id}", async (int idProducto, AplicacionDbContext context) =>
+        app.MapPost("/productos", async (ProductosCommandDto producto, IProductoService productoService) =>
         {
-            var producto = await context.Productos.FindAsync(idProducto);
-            if (producto is null)
+            try 
             {
-                return Results.NotFound();
+                productoService.CreateProducto(producto);
+                return Results.Created($"/productos/{producto.idProducto}", producto);
             }
-
-            context.Productos.Remove(producto);
-            await context.SaveChangesAsync();
-            return Results.NoContent();
+            catch (KeyNotFoundException ex)
+            {
+                return Results.NotFound(ex.Message);
+            }
         });
 
-        
+        app.MapPut("/productos/{id}", async (int id, ProductosCommandDto producto, IProductoService productoService) =>
+        {
+            try 
+            {
+                productoService.UpdateProducto(id, producto);
+                return Results.NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Results.NotFound(ex.Message);
+            }
+        });
+
+        app.MapDelete("/productos/{id}", async (int id, IProductoService productoService) =>
+        {
+            try 
+            {
+                productoService.DeleteProducto(id);
+                return Results.NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return Results.NotFound(ex.Message);
+            }
+        });
         
         return app;
     }
-
 }

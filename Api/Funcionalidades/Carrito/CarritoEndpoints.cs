@@ -1,6 +1,6 @@
 using Api.Funcionalidaades.Carritos;
-using Biblioteca;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace Api.Funcionalidades.Carritos;
 
@@ -8,24 +8,12 @@ public static class CarritoEndpoints
 {
     public static RouteGroupBuilder MapCarritoEndpoints(this RouteGroupBuilder app)
     {
-        // 1. Crear un nuevo carrito
-        app.MapPost("/Carrito/Crear", async (AplicacionDbContext context, CarritoQueryDto request) =>
+        app.MapPost("/carritos", async (ICarritoService carritoService, CarritoQueryDto request) =>
         {
             try
             {
-                var nuevoCarrito = new Carrito
-                {
-                    NroCarrito = request.NroCarrito,
-                };
-
-                context.Carritos.Add(nuevoCarrito);
-                await context.SaveChangesAsync();
-
-                return Results.Ok(new CarritoQueryDto
-                {
-                    NroCarrito = nuevoCarrito.NroCarrito,
-                    Total = nuevoCarrito.Total,
-                });
+                var nuevoCarrito = await carritoService.CreateCarrito(request);
+                return Results.Ok(nuevoCarrito);
             }
             catch (Exception ex)
             {
@@ -33,53 +21,30 @@ public static class CarritoEndpoints
             }
         });
 
-        // 2. Obtener todos los carritos
-        app.MapGet("/Carrito/Mostrar", async (AplicacionDbContext context) =>
+        app.MapGet("/carritos", async (ICarritoService carritoService) =>
         {
-            var carritos = await context.Carritos
-                .Select(c => new CarritoQueryDto
-                {
-                    NroCarrito = c.NroCarrito,
-                    Total = c.Total,
-                })
-                .ToListAsync();
-
+            var carritos = await carritoService.GetCarritos();
             return carritos.Any() 
                 ? Results.Ok(carritos) 
                 : Results.NotFound("No hay carritos registrados.");
         });
 
-        // 3. Buscar carrito por NroCarrito
-        app.MapGet("/Carrito/Buscar", async (AplicacionDbContext context, int nroCarrito) =>
+        app.MapGet("/carritos/{nroCarrito}", async (ICarritoService carritoService, int nroCarrito) =>
         {
-            var carrito = await context.Carritos
-                .Where(c => c.NroCarrito == nroCarrito)
-                .Select(c => new CarritoQueryDto
-                {
-                    NroCarrito = c.NroCarrito,
-                    Total = c.Total,
-                })
-                .FirstOrDefaultAsync();
-
+            var carrito = await carritoService.GetCarritoByNro(nroCarrito);
             return carrito != null 
                 ? Results.Ok(carrito) 
                 : Results.NotFound($"No se encontró el carrito con número {nroCarrito}");
         });
 
-        // 4. Eliminar un carrito
-        app.MapDelete("/Carrito/Eliminar", async (AplicacionDbContext context, int nroCarrito) =>
+        app.MapDelete("/carritos/{nroCarrito}", async (ICarritoService carritoService, int nroCarrito) =>
         {
-            var carrito = await context.Carritos
-                .FirstOrDefaultAsync(c => c.NroCarrito == nroCarrito);
-
-            if (carrito == null)
-                return Results.NotFound($"No se encontró el carrito con número {nroCarrito}");
-
             try
             {
-                context.Carritos.Remove(carrito);
-                await context.SaveChangesAsync();
-                return Results.Ok($"Carrito {nroCarrito} eliminado exitosamente.");
+                var resultado = await carritoService.DeleteCarrito(nroCarrito);
+                return resultado.Contains("eliminado")
+                    ? Results.Ok(resultado)
+                    : Results.NotFound(resultado);
             }
             catch (Exception ex)
             {

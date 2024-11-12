@@ -1,6 +1,6 @@
 using Biblioteca;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace Api.Funcionalidades.ItemCarritos;
 
@@ -8,15 +8,15 @@ public static class ItemCarritoEndpoints
 { 
     public static RouteGroupBuilder MapitemcarritoEndPoints(this RouteGroupBuilder app)
     {
-         app.MapGet("/categoria/mostrar", async (AplicacionDbContext context) =>
+        app.MapGet("/itemcarrito", async (IItemCarritoService itemCarritoService) =>
         {
-            var item = await context.ItemCarritos.ToListAsync();
-            return Results.Ok(item);
+            var items = await itemCarritoService.GetItemCarritos();
+            return Results.Ok(items);
         });
 
-        app.MapGet("/categoria/buscar/{id}", async (AplicacionDbContext context, int id) =>
+        app.MapGet("/itemcarrito/{id}", async (IItemCarritoService itemCarritoService, int id) =>
         {
-            var carrito = await context.Carritos.FindAsync(id);
+            var carrito = await itemCarritoService.GetItemCarrito(id);
             
             if (carrito == null)
             {
@@ -26,25 +26,18 @@ public static class ItemCarritoEndpoints
             return Results.Ok(carrito);
         });
 
-        app.MapPost("/ItemCarrito/mostrar", async (AplicacionDbContext context) =>
+        app.MapPut("/itemcarrito/{id}", async (IItemCarritoService itemCarritoService, int id, ItemCarritoCommandDto dto) =>
         {
-            var producto = await context.ItemCarritos.ToListAsync();
-            return Results.Ok(producto);
-        });
-
-        app.MapPut("/itemcarrito/actualizar", async (AplicacionDbContext context,int id, ItemCarritoCommandDto dto) =>
-        {
-           var item = await context.ItemCarritos
-            .FirstOrDefaultAsync(i => i.NroCarrito == id && i.Producto.idProducto == dto.idProducto);
-
-            item.Cantidad = dto.Cantidad;
-            item.Subtotal = dto.Cantidad * item.Producto.PrecioUnitario;
-
-            await context.SaveChangesAsync();
+            var resultado = await itemCarritoService.UpdateItemCarrito(id, dto);
+            
+            if (!resultado)
+            {
+                return Results.NotFound("Item no encontrado");
+            }
 
             return Results.Ok("Cantidad actualizada.");
         });
+
         return app;
     }
 }
-    

@@ -1,5 +1,6 @@
 using Biblioteca;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace Api.Funcionalidaades.Clientes;
 
@@ -7,29 +8,22 @@ public static class ClienteEndpoints
 {
     public static RouteGroupBuilder MapClienteEndPoints(this RouteGroupBuilder app)
     {
-        app.MapGet("/Cliente/Mostrar", (AplicacionDbContext context) =>
+        app.MapGet("/clientes", async (IClienteService clienteService) =>
         {
-            var Cliente = context.Clientes.ToList();
-            return Results.Ok(Cliente);
+            var clientes = await clienteService.GetClientes();
+            return Results.Ok(clientes);
         });
 
-        var passwordHasher = new PasswordHasher<Cliente>();
-
-        app.MapPost("/cliente/Registrar", async (AplicacionDbContext context, Cliente nuevoCliente) =>
+        app.MapPost("/clientes", async (IClienteService clienteService, UsuariosCommandDto clienteDto) =>
         {
-            nuevoCliente.Contraseña = passwordHasher.HashPassword(nuevoCliente, nuevoCliente.Contraseña);
-
-            context.Clientes.Add(nuevoCliente);
-            await context.SaveChangesAsync();
-
-            return Results.Ok("Cliente creado exitosamente");
+            var resultado = await clienteService.CreateCliente(clienteDto);
+            return Results.Ok(resultado);
         });
 
-
-        app.MapGet("/cliente/Buscar", async (AplicacionDbContext context, int dni) =>
+        app.MapGet("/clientes/{dni}", async (IClienteService clienteService, int dni) =>
         {
-            var cliente = await context.Clientes.FindAsync(dni);
-
+            var cliente = await clienteService.GetClienteByDni(dni);
+            
             if (cliente == null)
             {
                 return Results.NotFound("Cliente no encontrado");
@@ -38,28 +32,17 @@ public static class ClienteEndpoints
             return Results.Ok(cliente);
         });
 
-        app.MapPut("/clientes/Actualizar", async (AplicacionDbContext context, int id, Cliente clienteActualizado) =>
+        app.MapPut("/clientes/{dni}", async (IClienteService clienteService, int dni, UsuariosCommandDto clienteDto) =>
         {
-            var clienteExistente = await context.Clientes.FindAsync(id);
-            if (clienteExistente == null)
+            var resultado = await clienteService.UpdateCliente(dni, clienteDto);
+            
+            if (resultado == "Cliente no encontrado")
             {
-                return Results.NotFound("Cliente no encontrado");
+                return Results.NotFound(resultado);
             }
 
-            clienteExistente.Nombre = clienteActualizado.Nombre;
-            clienteExistente.Apellido = clienteActualizado.Apellido;
-            clienteExistente.Email = clienteActualizado.Email;
-            clienteExistente.Usuario = clienteActualizado.Usuario;
-
-            if (!string.IsNullOrEmpty(clienteActualizado.Contraseña))
-            {
-                clienteExistente.Contraseña = passwordHasher.HashPassword(clienteExistente, clienteActualizado.Contraseña);
-            }
-
-            await context.SaveChangesAsync();
-            return Results.Ok("Cliente actualizado exitosamente");
+            return Results.Ok(resultado);
         });
-
 
         return app;
     }

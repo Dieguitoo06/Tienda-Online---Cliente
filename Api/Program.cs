@@ -15,9 +15,13 @@ var connectionString = builder.Configuration.GetConnectionString("aplicacion_db"
 builder.Services.AddDbContext<AplicacionDbContext>(opciones =>
     opciones.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30))));
 
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IProductoService, ProductoService>();
+builder.Services.AddScoped<IItemCarritoService, ItemCarritoService>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+builder.Services.AddScoped<ICarritoService, CarritoService>();
 
 var app = builder.Build();
 
@@ -52,7 +56,7 @@ app.MapGroup("/Api")
     .WithTags("Producto");
 
 app.MapGroup("/Api")
-    .MapItemcarritoEndPoints()
+    .MapitemcarritoEndPoints()
     .WithTags("ItemCarrito");
 
 app.MapGroup("/Api")

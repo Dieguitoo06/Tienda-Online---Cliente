@@ -1,9 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace Api.Funcionalidades.Clientes.Categoria;
 
@@ -11,15 +7,15 @@ public static class CategoriaEndpoints
 {
     public static RouteGroupBuilder MapCategoriaEndPoints(this RouteGroupBuilder app)
     {
-        app.MapGet("/categoria/mostrar", async (AplicacionDbContext context) =>
+        app.MapGet("/categorias", async (ICategoriaService categoriaService) =>
         {
-            var categorias = await context.Categorias.ToListAsync();
+            var categorias = await categoriaService.GetCategorias();
             return Results.Ok(categorias);
         });
 
-        app.MapGet("/categoria/buscar/{id}", async (AplicacionDbContext context, int id) =>
+        app.MapGet("/categorias/{id}", async (ICategoriaService categoriaService, int id) =>
         {
-            var categoria = await context.Categorias.FindAsync(id);
+            var categoria = await categoriaService.GetCategoria(id);
             
             if (categoria == null)
             {
@@ -29,45 +25,34 @@ public static class CategoriaEndpoints
             return Results.Ok(categoria);
         });
 
-        app.MapPost("/categoria/crear", async (AplicacionDbContext context, CategoriaCommandDto categoriaDto) =>
+        app.MapPost("/categorias", async (ICategoriaService categoriaService, CategoriaCommandDto categoriaDto) =>
         {
-            var categoria = new Biblioteca.Categoria
-            {
-                Nombre = categoriaDto.Nombre
-            };
-
-            context.Categorias.Add(categoria);
-            await context.SaveChangesAsync();
-
-            return Results.Ok("Categoría creada exitosamente");
+            var resultado = await categoriaService.CreateCategoria(categoriaDto);
+            return Results.Ok(resultado);
         });
 
-        app.MapPut("/categoria/actualizar/{id}", async (AplicacionDbContext context, int id, CategoriaCommandDto categoriaDto) =>
+        app.MapPut("/categorias/{id}", async (ICategoriaService categoriaService, int id, CategoriaCommandDto categoriaDto) =>
         {
-            var categoriaExistente = await context.Categorias.FindAsync(id);
-            if (categoriaExistente == null)
+            var resultado = await categoriaService.UpdateCategoria(id, categoriaDto);
+            
+            if (resultado == "Categoría no encontrada")
             {
-                return Results.NotFound("Categoría no encontrada");
+                return Results.NotFound(resultado);
             }
 
-            categoriaExistente.Nombre = categoriaDto.Nombre;
-            await context.SaveChangesAsync();
-
-            return Results.Ok("Categoría actualizada exitosamente");
+            return Results.Ok(resultado);
         });
 
-        app.MapDelete("/categoria/eliminar/{id}", async (AplicacionDbContext context, int id) =>
+        app.MapDelete("/categorias/{id}", async (ICategoriaService categoriaService, int id) =>
         {
-            var categoria = await context.Categorias.FindAsync(id);
-            if (categoria == null)
+            var resultado = await categoriaService.DeleteCategoria(id);
+            
+            if (resultado == "Categoría no encontrada")
             {
-                return Results.NotFound("Categoría no encontrada");
+                return Results.NotFound(resultado);
             }
 
-            context.Categorias.Remove(categoria);
-            await context.SaveChangesAsync();
-
-            return Results.Ok("Categoría eliminada exitosamente");
+            return Results.Ok(resultado);
         });
 
         return app;
