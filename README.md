@@ -1,6 +1,6 @@
 <div align="center">
   
-# Tienda Online Cliente
+### E.T. Nº12 D.E. 1º "Libertador Gral. José de San Martín"
 
 </div>
 
@@ -10,7 +10,7 @@
 
 </div>
 
-## Introducción
+## Tienda Online Cliente
 
 La Tienda Online es una plataforma de comercio electrónico diseñada para permitir a vendedores y clientes realizar ventas y compras sin comisiones. Este proyecto está orientado a ofrecer una solución accesible para pequeñas empresas y emprendedores, permitiendo gestionar clientes, productos y carritos de compra de manera sencilla.
 
