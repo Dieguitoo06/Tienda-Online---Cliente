@@ -25,7 +25,7 @@ La Tienda Online es una plataforma de comercio electrónico diseñada para permi
 git clone https://github.com/Dieguitoo06/Tienda-Online-Cliente.git
 cd tu_proyecto_tienda_online
 
-### Configurar la Base de Datos
+## Configurar la Base de Datos
 
 {
   "ConnectionStrings": {
@@ -33,7 +33,7 @@ cd tu_proyecto_tienda_online
   }
 }
 
-### Ejecutar programa 
+## Ejecutar programa 
 
 dotnet run
 
