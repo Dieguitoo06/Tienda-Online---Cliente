@@ -1,6 +1,6 @@
 # Tienda Online Cliente
 
-![68747470733a2f2f657431322e6564752e61722f696d67732f657431322e676966](https://github.com/user-attachments/assets/fe87d7b2-8c6c-4666-993a-4f71ad08f826)
+                                        ![68747470733a2f2f657431322e6564752e61722f696d67732f657431322e676966](https://github.com/user-attachments/assets/fe87d7b2-8c6c-4666-993a-4f71ad08f826)
 
 ## Introducción
 
