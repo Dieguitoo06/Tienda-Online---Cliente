@@ -33,7 +33,7 @@ La Tienda Online es una plataforma de comercio electrónico diseñada para permi
 git clone https://github.com/tu_usuario/tu_proyecto_tienda_online.git
 cd tu_proyecto_tienda_online
 
-Configurar la Base de Datos
+### Configurar la Base de Datos
 Crea una nueva base de datos en MySQL. Puedes hacerlo con una herramienta como MySQL Workbench o directamente desde la consola de MySQL:
 
 sql
