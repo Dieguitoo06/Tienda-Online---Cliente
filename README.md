@@ -55,4 +55,8 @@ dotnet run
 
 ## Integrantes
 
+- **Diego Quintero**: Creador de las clases de C#, Api, Servicios y Endpoints.
+- **Karen Mejia**: Encargada de hacer el diagrama de clases.
+- **Rene Terrazas**: Creador de las validaciones de los Servicios y Endpoints.
+- **Brenda Quispe**: Encargada de supervisar que el proyecto cumpla las funcionalidades y testear el codigo.
 
