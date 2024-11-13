@@ -1,5 +1,7 @@
 # Tienda Online Cliente
 
+![68747470733a2f2f657431322e6564752e61722f696d67732f657431322e676966](https://github.com/user-attachments/assets/fe87d7b2-8c6c-4666-993a-4f71ad08f826)
+
 ## Introducción
 
 La Tienda Online es una plataforma de comercio electrónico diseñada para permitir a vendedores y clientes realizar ventas y compras sin comisiones. Este proyecto está orientado a ofrecer una solución accesible para pequeñas empresas y emprendedores, permitiendo gestionar clientes, productos y carritos de compra de manera sencilla.
@@ -42,4 +44,6 @@ cd tu_proyecto_tienda_online
 ```
 dotnet run
 ```
+
+### Integrantes
 
