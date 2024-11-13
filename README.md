@@ -1,6 +1,6 @@
 <div align="center">
   
-### E.T. Nº12 D.E. 1º "Libertador Gral. José de San Martín"
+# E.T. Nº12 D.E. 1º "Libertador Gral. José de San Martín"
 
 </div>
 
@@ -37,7 +37,7 @@ git clone https://github.com/Dieguitoo06/Tienda-Online-Cliente.git
 cd tu_proyecto_tienda_online
 ```
 
-### Configurar la Base de Datos
+## Configurar la Base de Datos
 
 ```
 {
@@ -47,11 +47,12 @@ cd tu_proyecto_tienda_online
 }
 ```
 
-### Ejecutar programa 
+## Ejecutar programa 
 
 ```
 dotnet run
 ```
 
-### Integrantes
+## Integrantes
+
 
