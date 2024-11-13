@@ -1,15 +1,8 @@
-# Tienda Online - Plataforma de Ventas Gratuita
+# Tienda Online Cliente
 
 ## Introducción
 
 La Tienda Online es una plataforma de comercio electrónico diseñada para permitir a vendedores y clientes realizar ventas y compras sin comisiones. Este proyecto está orientado a ofrecer una solución accesible para pequeñas empresas y emprendedores, permitiendo gestionar clientes, productos y carritos de compra de manera sencilla.
-
-## Funcionalidades
-
-- **Gestión de Clientes**: Registro, autenticación, y almacenamiento de información personal como nombre, apellido, email, nombre de usuario y contraseña.
-- **Búsqueda y Filtro de Productos**: Búsqueda por nombre, descripción o categoría y filtrado por rango de precios.
-- **Carrito de Compras**: Adición de productos, especificación de cantidades, cálculo de subtotales y total de la compra.
-- **Proceso de Compra**: Confirmación de compra que ajusta el inventario y posibilidad de cancelar el carrito.
 
 ## Tecnologías Utilizadas
 
@@ -27,47 +20,8 @@ La Tienda Online es una plataforma de comercio electrónico diseñada para permi
 
 ## Configuración del Entorno
 
-### Clonar el Repositorio
+### Clonar el Repositorio 
 
 ```bash
 git clone https://github.com/tu_usuario/tu_proyecto_tienda_online.git
 cd tu_proyecto_tienda_online
-
-### Configurar la Base de Datos
-Crea una nueva base de datos en MySQL. Puedes hacerlo con una herramienta como MySQL Workbench o directamente desde la consola de MySQL:
-
-sql
-Copiar código
-CREATE DATABASE tienda_online;
-Actualiza la cadena de conexión en el archivo appsettings.json dentro de tu proyecto. Asegúrate de colocar los valores correctos de tu servidor y credenciales de base de datos:
-
-json
-Copiar código
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=tienda_online;User=root;Password=tu_contraseña;"
-  }
-}
-Migraciones y Actualización de la Base de Datos
-Abrir una terminal en la carpeta raíz del proyecto.
-
-Ejecuta los siguientes comandos para crear y aplicar las migraciones a la base de datos. Esto generará las tablas y relaciones necesarias:
-
-Agregar la migración inicial:
-
-bash
-Copiar código
-dotnet ef migrations add InitialCreate
-Actualizar la base de datos para aplicar las migraciones:
-
-bash
-Copiar código
-dotnet ef database update
-Estos comandos crean la estructura inicial de la base de datos basándose en las clases definidas en el proyecto.
-
-Ejecutar el Proyecto
-Para iniciar el proyecto, ejecuta:
-
-bash
-Copiar código
-dotnet run
