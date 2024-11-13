@@ -22,19 +22,24 @@ La Tienda Online es una plataforma de comercio electrónico diseñada para permi
 
 ### Clonar el Repositorio 
 
+```
 git clone https://github.com/Dieguitoo06/Tienda-Online-Cliente.git
 cd tu_proyecto_tienda_online
+```
 
-## Configurar la Base de Datos
+### Configurar la Base de Datos
 
+```
 {
   "ConnectionStrings": {
     "DefaultConnection": "Server=localhost;Database=tienda_online;User=root;Password=tu_contraseña;"
   }
 }
+```
 
-## Ejecutar programa 
+### Ejecutar programa 
 
+```
 dotnet run
-
+```
 
