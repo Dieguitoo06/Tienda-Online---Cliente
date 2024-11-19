@@ -51,6 +51,36 @@ public static class CarritoEndpoints
                 return Results.BadRequest($"Error al eliminar el carrito: {ex.Message}");
             }
         });
+        app.MapPost("/carritos/{nroCarrito}/cerrar", async (ICarritoService carritoService, int nroCarrito) =>
+        {
+            try
+            {
+                var resultado = await carritoService.CerrarCarrito(nroCarrito);
+                return resultado.Contains("exitosamente")
+                    ? Results.Ok(resultado)
+                    : Results.BadRequest(resultado);
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest($"Error al cerrar el carrito: {ex.Message}");
+            }
+        });
+
+        app.MapPost("/carritos/{nroCarrito}/cancelar", async (ICarritoService carritoService, int nroCarrito) =>
+        {
+            try
+            {
+                var resultado = await carritoService.CancelarCarrito(nroCarrito);
+                return resultado.Contains("exitosamente")
+                    ? Results.Ok(resultado)
+                    : Results.BadRequest(resultado);
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest($"Error al cancelar el carrito: {ex.Message}");
+            }
+        });
+
 
         return app;
     }

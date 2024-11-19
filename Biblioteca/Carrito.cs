@@ -15,4 +15,6 @@ public class Carrito
 
     public List<ItemCarrito> Productos { get; set; } = new();
 
+    [Required]
+    public string Estado { get; set; } = "Abierto";
 }

@@ -10,6 +10,7 @@ public interface IProductoService
     List<ProductosQueryDto> GetProductos();
     void UpdateProducto(int idProducto, ProductosCommandDto productoDto);  
     List<ProductosQueryDto> GetProductosPorRangoPrecio(decimal precioMinimo, decimal precioMaximo);
+    List<ProductosQueryDto> BuscarProductos(string? nombre, string? nombreCategoria, int? stockMinimo);
 }
 
 public class ProductoService : IProductoService
@@ -21,17 +22,41 @@ public class ProductoService : IProductoService
         _context = context;
     }
 
-    public List<ProductosQueryDto> GetProductosPorRangoPrecio(decimal precioMinimo, decimal precioMaximo)
+    public List<ProductosQueryDto> GetProductos()
     {
         return _context.Productos
-            .Where(p => p.PrecioUnitario >= precioMinimo && p.PrecioUnitario <= precioMaximo)
+            .Include(p => p.Categoria)
             .Select(p => new ProductosQueryDto
             {
                 idProducto = p.idProducto,
-                Nombre = p.Nombre,
-                PrecioUnitario = p.PrecioUnitario  // Agregamos el precio a la selección
+                NombreCategoria = p.Nombre,
+                PrecioUnitario = p.PrecioUnitario,
+                Stock = p.Stock  // Agregamos el stock
             })
             .ToList();
+    }
+    public List<ProductosQueryDto> BuscarProductos(string? nombre, string? NombreCategoria, int? stockMinimo)
+    {
+        var query = _context.Productos
+            .Include(p => p.Categoria)
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(nombre))
+            query = query.Where(p => p.Nombre.Contains(nombre));
+
+        if (!string.IsNullOrEmpty(NombreCategoria))
+            query = query.Where(p => p.Categoria.NombreCategoria.Contains(NombreCategoria));
+
+        if (stockMinimo.HasValue)
+            query = query.Where(p => p.Stock >= stockMinimo);
+
+        return query.Select(p => new ProductosQueryDto
+        {
+            idProducto = p.idProducto,
+            PrecioUnitario = p.PrecioUnitario,
+            Stock = p.Stock,
+            NombreCategoria = p.Categoria.NombreCategoria  // Agregamos el nombre de la categoría
+        }).ToList();
     }
 
     public void CreateProducto(ProductosCommandDto productoDto)
@@ -64,15 +89,16 @@ public class ProductoService : IProductoService
         _context.SaveChanges();
     }
 
-    public List<ProductosQueryDto> GetProductos()
+    public List<ProductosQueryDto> GetProductosPorRangoPrecio(decimal precioMinimo, decimal precioMaximo)
     {
         return _context.Productos
-            .Include(p => p.Categoria)
+            .Where(p => p.PrecioUnitario >= precioMinimo && p.PrecioUnitario <= precioMaximo)
             .Select(p => new ProductosQueryDto
             {
                 idProducto = p.idProducto,
-                Nombre = p.Nombre,
-                PrecioUnitario = p.PrecioUnitario  // Agregamos el precio a la selección
+                NombreCategoria = p.Nombre,
+                PrecioUnitario = p.PrecioUnitario,
+                Stock = p.Stock
             })
             .ToList();
     }

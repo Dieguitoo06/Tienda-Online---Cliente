@@ -64,6 +64,16 @@ public static class ProductoEndpoints
             var productos = productoService.GetProductosPorRangoPrecio(precioMinimo, precioMaximo);
             return Results.Ok(productos);
         });
+
+        app.MapGet("/productos/buscar", async (
+            string? nombre, 
+            string? NombreCategoria, 
+            int? stockMinimo, 
+            IProductoService productoService) =>
+        {
+            var productos = productoService.BuscarProductos(nombre, NombreCategoria, stockMinimo);
+            return Results.Ok(productos);
+        });
         
         return app;
     }

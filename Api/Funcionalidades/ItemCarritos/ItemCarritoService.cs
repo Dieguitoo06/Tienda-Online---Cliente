@@ -78,13 +78,16 @@ public class ItemCarritoService : IItemCarritoService
     var producto = await _context.Productos.FindAsync(dto.idProducto)
         ?? throw new Exception("El producto no existe");
 
-    // Verificar si el carrito existe
+    // Verificar si el carrito existe y está abierto
     var carrito = await _context.Carritos
         .Include(c => c.Productos)
         .FirstOrDefaultAsync(c => c.NroCarrito == dto.NroCarrito)
         ?? throw new Exception("El carrito no existe");
 
-    // Verificar stock
+    if (carrito.Estado != "Abierto")
+        throw new Exception("No se pueden agregar items a un carrito cerrado o cancelado");
+
+    // Verificar stock disponible sin modificarlo aún
     if (producto.Stock < dto.Cantidad)
         throw new Exception("No hay suficiente stock disponible");
 
@@ -97,9 +100,6 @@ public class ItemCarritoService : IItemCarritoService
         // Actualizar cantidad y subtotal del item existente
         itemExistente.Cantidad += dto.Cantidad;
         itemExistente.Subtotal = itemExistente.Cantidad * producto.PrecioUnitario;
-        
-        // Actualizar stock del producto
-        producto.Stock -= dto.Cantidad;
     }
     else
     {
@@ -113,23 +113,17 @@ public class ItemCarritoService : IItemCarritoService
             idProducto = producto.idProducto,
             NroCarrito = carrito.NroCarrito
         };
-
-        // Actualizar stock del producto
-        producto.Stock -= dto.Cantidad;
         
         _context.ItemCarritos.Add(nuevoItem);
         itemExistente = nuevoItem;
     }
 
-    // Primero guardamos los cambios para asegurar que el item esté en la base de datos
+    // Actualizar el total del carrito
     await _context.SaveChangesAsync();
-
-    // Ahora calculamos el total del carrito
     carrito.Total = await _context.ItemCarritos
         .Where(i => i.NroCarrito == carrito.NroCarrito)
         .SumAsync(i => i.Subtotal);
 
-    // Guardamos el nuevo total
     await _context.SaveChangesAsync();
 
     return new ItemCarritoQueryDto

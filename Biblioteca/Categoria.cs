@@ -11,6 +11,6 @@ public class Categoria
     public int idCategoria { get; set; }
 
     [Required]
-    public required string Nombre { get; set; }
+    public required string NombreCategoria { get; set; }
 
 }

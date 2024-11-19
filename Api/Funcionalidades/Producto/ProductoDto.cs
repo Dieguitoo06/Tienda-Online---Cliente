@@ -5,7 +5,7 @@ namespace Api.Funcionalidaades.Productos;
 public class ProductosQueryDto
 {
     public int idProducto { get; set; }
-    public required string Nombre { get; set; }
+    public required string NombreCategoria { get; set; }
     public int Stock { get; set; } 
     public decimal PrecioUnitario { get; set;}
 

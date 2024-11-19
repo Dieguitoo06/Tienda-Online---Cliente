@@ -26,7 +26,7 @@ public class CategoriaService : ICategoriaService
             .Select(c => new CategoriaDto
             {
                 idCategoria = c.idCategoria,
-                Nombre = c.Nombre
+                Nombre = c.NombreCategoria
             })
             .ToListAsync();
     }
@@ -41,7 +41,7 @@ public class CategoriaService : ICategoriaService
         return new CategoriaDto
         {
             idCategoria = categoria.idCategoria,
-            Nombre = categoria.Nombre
+            Nombre = categoria.NombreCategoria
         };
     }
 
@@ -49,7 +49,7 @@ public class CategoriaService : ICategoriaService
     {
         var categoria = new Categoria
         {
-            Nombre = categoriaDto.Nombre
+            NombreCategoria = categoriaDto.Nombre
         };
 
         _context.Categorias.Add(categoria);
@@ -66,7 +66,7 @@ public class CategoriaService : ICategoriaService
             return "Categoría no encontrada";
         }
 
-        categoriaExistente.Nombre = categoriaDto.Nombre;
+        categoriaExistente.NombreCategoria = categoriaDto.Nombre;
         await _context.SaveChangesAsync();
 
         return "Categoría actualizada exitosamente";
