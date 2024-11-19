@@ -13,6 +13,13 @@ public static class ProductoEndpoints
             return Results.Ok(productos);
         });
 
+        app.MapGet("/productos", async (string Nombre, string idCategoria, int Stock) =>  // Ver esto.
+        {
+            idCategoria = idCategoria
+            Nombre = Nombre
+            Stock = Stock;
+        });
+
         app.MapPost("/productos", async (ProductosCommandDto producto, IProductoService productoService) =>
         {
             try 
