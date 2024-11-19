@@ -50,6 +50,18 @@ public static class ProductoEndpoints
             {
                 return Results.NotFound(ex.Message);
             }
+        
+        });
+        
+        app.MapGet("/productos/precio-rango", async (decimal precioMinimo, decimal precioMaximo, IProductoService productoService) =>
+        {
+            if (precioMinimo > precioMaximo)
+            {
+                return Results.BadRequest("El precio mínimo no puede ser mayor al precio máximo");
+            }
+
+            var productos = productoService.GetProductosPorRangoPrecio(precioMinimo, precioMaximo);
+            return Results.Ok(productos);
         });
         
         return app;
