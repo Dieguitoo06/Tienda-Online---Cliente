@@ -40,12 +40,12 @@ public static class ItemCarritoEndpoints
         {
             try
             {
-                var nuevoItem = await itemCarritoService.CreateItemCarrito(dto);
-                return Results.Created($"/itemcarrito/{nuevoItem.idItemCarrito}", nuevoItem);
+                var resultado = await itemCarritoService.AddItemToCarrito(dto);
+                return Results.Ok(resultado);
             }
             catch (Exception ex)
             {
-                return Results.BadRequest($"Error al crear el item: {ex.Message}");
+                return Results.BadRequest($"Error al agregar el item al carrito: {ex.Message}");
             }
         });
 

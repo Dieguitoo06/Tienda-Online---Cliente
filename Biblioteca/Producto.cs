@@ -24,6 +24,9 @@ public class Producto
     [Required]
     public int Stock { get; set; }
     
+    [Required]
+    [ForeignKey("Categoria")]
+    public int idCategoria { get; set; }  // Agregar la clave foránea
+    
     public required Categoria Categoria { get; set; }
-
 }

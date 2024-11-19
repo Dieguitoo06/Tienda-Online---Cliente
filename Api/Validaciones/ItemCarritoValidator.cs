@@ -19,8 +19,18 @@ public class ItemCarritoCommandDtoValidator : AbstractValidator<ItemCarritoComma
             .MustAsync(async (model, cantidad, cancellation) => {
                 var producto = await _context.Productos
                     .FirstOrDefaultAsync(p => p.idProducto == model.idProducto);
+                
                 if (producto == null) return false;
-                return producto.Stock >= cantidad;
+
+                // Verificar stock disponible considerando items existentes
+                var itemExistente = await _context.ItemCarritos
+                    .FirstOrDefaultAsync(i => i.NroCarrito == model.NroCarrito && i.idProducto == model.idProducto);
+                
+                var cantidadTotal = itemExistente != null ? 
+                    itemExistente.Cantidad + cantidad : 
+                    cantidad;
+
+                return producto.Stock >= cantidadTotal;
             }).WithMessage("No hay suficiente stock disponible");
 
         RuleFor(x => x.idProducto)
