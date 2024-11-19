@@ -1,5 +1,6 @@
 using Api.Funcionalidaades.Productos;
 using Biblioteca;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 public interface IProductoService
@@ -8,6 +9,7 @@ public interface IProductoService
     void DeleteProducto(int idProducto);  
     List<ProductosQueryDto> GetProductos();
     void UpdateProducto(int idProducto, ProductosCommandDto productoDto);  
+    List<ProductosQueryDto> GetProductosPorRangoPrecio(decimal precioMinimo, decimal precioMaximo);
 }
 
 public class ProductoService : IProductoService
@@ -17,6 +19,19 @@ public class ProductoService : IProductoService
     public ProductoService(AplicacionDbContext context)
     {
         _context = context;
+    }
+
+    public List<ProductosQueryDto> GetProductosPorRangoPrecio(decimal precioMinimo, decimal precioMaximo)
+    {
+        return _context.Productos
+            .Where(p => p.PrecioUnitario >= precioMinimo && p.PrecioUnitario <= precioMaximo)
+            .Select(p => new ProductosQueryDto
+            {
+                idProducto = p.idProducto,
+                Nombre = p.Nombre,
+                PrecioUnitario = p.PrecioUnitario  // Agregamos el precio a la selección
+            })
+            .ToList();
     }
 
     public void CreateProducto(ProductosCommandDto productoDto)
@@ -56,7 +71,8 @@ public class ProductoService : IProductoService
             .Select(p => new ProductosQueryDto
             {
                 idProducto = p.idProducto,
-                Nombre = p.Nombre
+                Nombre = p.Nombre,
+                PrecioUnitario = p.PrecioUnitario  // Agregamos el precio a la selección
             })
             .ToList();
     }
@@ -80,4 +96,5 @@ public class ProductoService : IProductoService
 
         _context.SaveChanges();
     }
+    
 }
