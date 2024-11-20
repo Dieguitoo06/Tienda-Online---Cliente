@@ -118,8 +118,10 @@ public async Task<string> CancelarCarrito(int nroCarrito)
     if (carrito.Estado != "Abierto")
         return "El carrito ya está cerrado o cancelado";
 
-    // Eliminar los items del carrito sin modificar el stock
+    // Eliminar los items del carrito
     _context.ItemCarritos.RemoveRange(carrito.Productos);
+    carrito.Productos.Clear(); 
+    carrito.Total = 0; 
     carrito.Estado = "Cancelado";
     await _context.SaveChangesAsync();
 

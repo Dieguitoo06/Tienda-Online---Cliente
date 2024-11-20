@@ -114,11 +114,7 @@ public class ProductoService : IProductoService
         var categoria = _context.Categorias.Find(productoDto.idCategoria)
             ?? throw new KeyNotFoundException("Categoría no encontrada");
 
-        producto.Nombre = productoDto.Nombre;
-        producto.Descripcion = productoDto.Descripcion;
-        producto.PrecioUnitario = productoDto.PrecioUnitario;
         producto.Stock = productoDto.Stock;
-        producto.Categoria = categoria;
 
         _context.SaveChanges();
     }
