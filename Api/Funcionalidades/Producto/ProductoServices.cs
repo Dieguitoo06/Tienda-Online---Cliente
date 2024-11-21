@@ -31,7 +31,7 @@ public class ProductoService : IProductoService
                 idProducto = p.idProducto,
                 NombreCategoria = p.Nombre,
                 PrecioUnitario = p.PrecioUnitario,
-                Stock = p.Stock  // Agregamos el stock
+                Stock = p.Stock 
             })
             .ToList();
     }
@@ -55,7 +55,7 @@ public class ProductoService : IProductoService
             idProducto = p.idProducto,
             PrecioUnitario = p.PrecioUnitario,
             Stock = p.Stock,
-            NombreCategoria = p.Categoria.NombreCategoria  // Agregamos el nombre de la categoría
+            NombreCategoria = p.Categoria.NombreCategoria
         }).ToList();
     }
 
