@@ -2,6 +2,7 @@ using Api.Funcionalidaades.Clientes;
 using Api.Funcionalidades.Carritos;
 using Api.Funcionalidades.Clientes.Categoria;
 using Api.Funcionalidades.ItemCarritos;
+using Api.Funcionalidades.HistorialPrecioEndPoint;
 
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
@@ -19,6 +20,8 @@ builder.Services.AddDbContext<AplicacionDbContext>(opciones =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IHistorialPrecioService, HistorialPrecioService>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IItemCarritoService, ItemCarritoService>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
@@ -71,6 +74,10 @@ app.MapGroup("/Api")
 app.MapGroup("/Api")
     .MapCarritoEndpoints()
     .WithTags("Carrito");
+
+app.MapGroup("/Api")
+    .MapHistorialPrecioEndPoints()
+    .WithTags("HistorialPrecio");
 
 
 app.Run();
